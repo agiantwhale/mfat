@@ -18,29 +18,24 @@ function optimize(collection, options) {
 
   collection = collection.filter(function(a) {
     return a[control] <= target;
-  }).sort(function(a, b) {
-    return a[control] > b[control];
   });
 
-  if(target <= 0 || collection.length == 0) {
+  if(collection.length == 0) {
     return {
       collection: [],
       accumulator: 0
     };
   }
 
-  var last_element = collection[collection.length-1];
-  var last_dont_include = optimize(collection.splice(0,collection.length-1),
-                                   options);
-  var last_include = optimize(collection,
-                              {
-                                control: control,
-                                response: response,
-                                target: target-last_element[control]
-                              });
-  last_include.collection.push(last_element);
-  last_include.accumulator += last_element[response];
+  var prev_result =   optimize(collection.slice(0,collection.length-1),
+                      {control: control, response: response, target: target});
+  var last_element =  collection[collection.length-1];
+  var curr_result =   optimize(collection,
+                      {control: control, response: response,
+                      target: target-last_element[control]});
+  curr_result.collection.push(last_element);
+  curr_result.accumulator += last_element[response];
 
-  if(last_include.target >= last_dont_include.target) return last_include;
-  else return last_dont_include;
+  if(curr_result.accumulator > prev_result.accumulator) return curr_result;
+  else return prev_result;
 }
