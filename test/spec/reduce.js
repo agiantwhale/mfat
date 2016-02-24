@@ -15,10 +15,10 @@
         });
 
         it('return the correct number', function () {
-          assert.equal(optimize(menu, {control: "min", response: "max", target: 150}).accumulator, 33);
-          assert.equal(optimize(menu, {control: "min", response: "max", target: 160}).accumulator, 36);
-          assert.equal(optimize(menu, {control: "min", response: "max", target: 170}).accumulator, 38);
-          assert.equal(optimize(menu, {control: "min", response: "max", target: 200}).accumulator, 50);
+          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 150}).accumulator, 33);
+          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 160}).accumulator, 36);
+          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 170}).accumulator, 38);
+          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 200}).accumulator, 50);
         });
 
         // it('should complete within reasonable time', function () {
