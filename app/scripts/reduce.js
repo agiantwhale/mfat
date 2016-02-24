@@ -62,7 +62,7 @@ var dp = (function(dp) {
   };
 
   var retrieve = function(index, target, cache) {
-    if(!!cache[index] || !!cache[index][target]) return null;
+    if(!cache[index] || !cache[index][target]) return null;
     return cache[index][target];
   };
 
@@ -78,10 +78,12 @@ var dp = (function(dp) {
     var index = Math.min(dp.search(collection, options), options.index);
 
     if(index === -1) {
-      return {
+      set(index, target, {
         collection: [],
         accumulator: 0
-      };
+      }, cache);
+
+      return true;
     }
 
     var prev_result = retrieve(index-1, target, cache);
@@ -90,7 +92,7 @@ var dp = (function(dp) {
     }
 
     var last_element = collection[collection.length-1];
-    var curr_result = retrieve(index, target-last_element[control]);
+    var curr_result = retrieve(index, target-last_element[control], cache);
     if(curr_result === null) {
       queue.push([index, target-last_element[control]]); return false;
     }
@@ -107,6 +109,9 @@ var dp = (function(dp) {
 
   // Iterative
   dp.reduce = function(collection, options) {
+    // save the original target
+    var target = options.target;
+
     // Sort the collection first.
     var control = options.control;
     collection = collection.sort(function(a,b) {
@@ -126,5 +131,9 @@ var dp = (function(dp) {
       options.target = last_params[1];
       if(iterate(collection, options, cache, queue)) queue.pop();
     }
+
+    return retrieve(collection.index-1, target, cache);
   };
+
+  return dp;
 }(dp || {}));
