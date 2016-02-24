@@ -50,9 +50,10 @@ var dp = (function(dp) {
     var control = options.control;
     var target = options.target;
 
-    var low = 0, high = collection.length;
+    var low = 0, high = collection.length-1;
 
-    if(target < collection[0][control]) return -1;
+    if(target < collection[low][control]) return -1;
+    if(target >= collection[high][control]) return high;
 
     while (low < high) {
       var mid = Math.floor((low + high) / 2);
