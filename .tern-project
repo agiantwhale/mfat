@@ -1,12 +1,9 @@
 {
   "libs": [
     "browser",
-    "jquery"
+    "jquery",
+    "underscore",
+    "chai"
   ],
-  "loadEagerly": [
-    "importantfile.js"
-  ],
-  "plugins": {
-    "mocha": {}
-  }
+  "loadEagerly": []
 }

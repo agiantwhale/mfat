@@ -10,30 +10,36 @@
           {min: 200, max: 50},
         ];
 
-        menu = menu.sort(function(a, b) {
-          return a["min"] - b["min"];
-        });
-
         it('return the correct number', function () {
-          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 150}).accumulator, 33);
-          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 160}).accumulator, 36);
-          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 170}).accumulator, 38);
-          assert.equal(dp.optimize(menu, {control: "min", response: "max", target: 200}).accumulator, 50);
-        });
+          MFat.collection(menu, "min", "max");
 
-        it('return the correct number (iterative)', function () {
-          assert.equal(dp.reduce(menu, {control: "min", response: "max", target: 150}).accumulator, 33);
-          assert.equal(dp.reduce(menu, {control: "min", response: "max", target: 160}).accumulator, 36);
-          assert.equal(dp.reduce(menu, {control: "min", response: "max", target: 170}).accumulator, 38);
-          assert.equal(dp.reduce(menu, {control: "min", response: "max", target: 200}).accumulator, 50);
-        });
+          {
+            var result = MFat.optimize(150);
+            var totalMin = _.reduce(result.collection, function(memo, val) {return memo + val.min;}, 0);
+            chai.assert.isTrue(totalMin <= 150);
+            chai.assert.equal(result.accumulator, 33);
+          }
 
-        // it('should complete within reasonable time', function () {
-        //   var bigMenu = [];
-        //   for (var i = 0; i < 100; i++) {
-        //     bigMenu.push({max: Math.random() * i + 1, min: Math.random() * i});
-        //   }
-        //   optimize(bigMenu, {control: "max", response: "min", target: 200});
-        // });
+          {
+            var result = MFat.optimize(160);
+            var totalMin = _.reduce(result.collection, function(memo, val) {return memo + val.min;}, 0);
+            chai.assert.isTrue(totalMin <= 160);
+            chai.assert.equal(result.accumulator, 36);
+          }
+
+          {
+            var result = MFat.optimize(170);
+            var totalMin = _.reduce(result.collection, function(memo, val) {return memo + val.min;}, 0);
+            chai.assert.isTrue(totalMin <= 170);
+            chai.assert.equal(result.accumulator, 38);
+          }
+
+          {
+            var result = MFat.optimize(200);
+            var totalMin = _.reduce(result.collection, function(memo, val) {return memo + val.min;}, 0);
+            chai.assert.isTrue(totalMin <= 200);
+            chai.assert.equal(result.accumulator, 50);
+          }
+        });
     });
 })();
