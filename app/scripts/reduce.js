@@ -33,7 +33,6 @@ var MFat = (function(exports) {
     return a >= b ? a * a + a + b : a + b * b;
   };
   var reduce = function(target, counts) {
-    console.log('Target: ' + target + ', Counts: ' + counts);
     if(counts == 0 || target < 0) {
       memoize[hasher(target, counts)] = {
         collection: [],
@@ -81,7 +80,6 @@ var MFat = (function(exports) {
 
     while(store.length != 0) {
       if(reduce.apply(null, _.last(store))) {
-        console.log('Store queue: ' + store.length);
         store = _.initial(store);
       }
     }
