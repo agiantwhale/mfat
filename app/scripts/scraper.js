@@ -1,3 +1,4 @@
+/* global jQuery */
 'use strict';
 
 this.MFat = (function(exports, $) {
@@ -5,41 +6,45 @@ this.MFat = (function(exports, $) {
   var sanitize = function(data) {
     var menus = {};
 
-    for(var i in data['menu']['meal']) {
-      var meal = data['menu']['meal'][i];
+    for(var i in data.menu.meal) {
+      var meal = data.menu.meal[i];
       var name = meal.name; // BREAKFAST/LUNCH/DINNER
       var items = [];
 
       for(var j in meal.course) {
         var course = meal.course[j];
         if($.isArray(course.menuitem)) {
+          var menuitem = null;
+          var menuname = null;
+          var portion = null;
+          var kcal = null;
           for(var k in course.menuitem) {
-            var menuitem = course.menuitem[k];
+            menuitem = course.menuitem[k];
             try {
-              var menuname = menuitem.name;
-              var portion = parseInt(menuitem.itemsize.portion_size);
-              var kcal = menuitem.itemsize.nutrition.kcal;
-              kcal = parseInt(kcal.substring(0, kcal.length-4));
+              menuname = menuitem.name;
+              portion = parseInt(menuitem.itemsize.portion_size);
+              kcal = menuitem.itemsize.nutrition.kcal;
+              kcal = parseInt(kcal.substring(0, kcal.length - 4));
               items.push({
                 name: menuname,
                 portion: portion,
                 calories: kcal
               });
-            } catch(e) {}
+            } catch(e) {console.log(e); }
           }
         } else if($.isPlainObject(course.menuitem)){
-          var menuitem = course.menuitem;
+          menuitem = course.menuitem;
           try {
-            var menuname = menuitem.name;
-            var portion = parseInt(menuitem.itemsize.portion_size);
-            var kcal = menuitem.itemsize.nutrition.kcal;
-            kcal = parseInt(kcal.substring(0, kcal.length-4));
+            menuname = menuitem.name;
+            portion = parseInt(menuitem.itemsize.portion_size);
+            kcal = menuitem.itemsize.nutrition.kcal;
+            kcal = parseInt(kcal.substring(0, kcal.length - 4));
             items.push({
               name: menuname,
               portion: portion,
               calories: kcal
             });
-          } catch(e) {}
+          } catch(e) {console.log(e); }
         }
       }
 
@@ -47,9 +52,9 @@ this.MFat = (function(exports, $) {
     }
 
     // Remove non-existant menus
-    for(var i in menus) {
-      if(menus[i].length == 0) {
-        delete menus[i];
+    for(var l in menus) {
+      if(menus[l].length === 0) {
+        delete menus[l];
       }
     }
 
@@ -59,17 +64,17 @@ this.MFat = (function(exports, $) {
   exports.scrap = function(location) {
     var deferred = new $.Deferred();
 
-    var yql_url = 'https://query.yahooapis.com/v1/public/yql';
-    var url = 'http://api.studentlife.umich.edu/menu/xml2print.php'+
-                '?controller=print'+
-                '&view=json'+
-                '&location='+encodeURI(location);
-    var request = $.ajax({
-      url: yql_url,
+    var yqlUrl = 'https://query.yahooapis.com/v1/public/yql';
+    var url = 'http://api.studentlife.umich.edu/menu/xml2print.php' +
+                '?controller=print' +
+                '&view=json' +
+                '&location=' + encodeURI(location);
+    $.ajax({
+      url: yqlUrl,
       data: {
-        'q': 'SELECT * FROM json WHERE url="'+url+'"',
+        'q': 'SELECT * FROM json WHERE url="' + url + '"',
         'format': 'json',
-        'jsonCompat': 'new',
+        'jsonCompat': 'new'
       },
       dataType: 'jsonp',
       success: function(data) {
@@ -77,7 +82,7 @@ this.MFat = (function(exports, $) {
         var menus = sanitize(data);
         deferred.resolve(menus);
       },
-      error: function(data) {
+      error: function() {
         // handle error here.
         deferred.reject();
       }

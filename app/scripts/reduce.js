@@ -1,3 +1,4 @@
+/* global _ */
 'use strict';
 
 // REQUIRES:  collection must be sorted list of objects with
@@ -26,11 +27,15 @@ this.MFat = (function(exports, _) {
     sortObject[control] = target;
     var minCounts = _.sortedIndex(collection, sortObject, control);
     if(minCounts < collection.length &&
-       collection[minCounts][control] == target) minCounts++;
+       collection[minCounts][control] === target) {
+          minCounts++;
+       }
     return Math.min(minCounts, counts);
   };
   var hasher = function(a, b) {
-    if(a < 0) return -1;
+    if(a < 0) {
+      return -1;
+    }
     return a >= b ? a * a + a + b : a + b * b;
   };
   var reduce = function(target, counts) {
@@ -48,18 +53,18 @@ this.MFat = (function(exports, _) {
       return true;
     }
 
-    var prevResult = memoize[hasher(target, reducedCounts-1)];
+    var prevResult = memoize[hasher(target, reducedCounts - 1)];
     if(_.isUndefined(prevResult)) {
-      store.push([target, reducedCounts-1]);
+      store.push([target, reducedCounts - 1]);
       return false;
     }
 
-    var lastElement = collection[reducedCounts-1];
+    var lastElement = collection[reducedCounts - 1];
     var currResult = memoize[hasher(target - lastElement[control],
-                                    allowRepeats ? reducedCounts : reducedCounts-1)];
+                                    allowRepeats ? reducedCounts : reducedCounts - 1)];
     if(_.isUndefined(currResult)) {
       store.push([target - lastElement[control],
-                  allowRepeats ? reducedCounts : reducedCounts-1]);
+                  allowRepeats ? reducedCounts : reducedCounts - 1]);
       return false;
     }
 
@@ -70,10 +75,11 @@ this.MFat = (function(exports, _) {
     currResult.collection.push(lastElement);
     currResult.accumulator += lastElement[response];
 
-    if(currResult.accumulator > prevResult.accumulator)
+    if(currResult.accumulator > prevResult.accumulator) {
       memoize[hasher(target, counts)] = currResult;
-    else
+    } else {
       memoize[hasher(target, counts)] = prevResult;
+    }
 
     return true;
   };
@@ -82,7 +88,7 @@ this.MFat = (function(exports, _) {
     var counts = reduceCounts(target, collection.length);
     store.push([target, counts]);
 
-    while(store.length != 0) {
+    while(store.length !== 0) {
       if(reduce.apply(null, _.last(store))) {
         store = _.initial(store);
       }

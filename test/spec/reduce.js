@@ -13,7 +13,7 @@
             {min: 200, max: 50}
           ];
 
-          MFat.collection(menu, 'min', 'max');
+          MFat.collection(menu, 'min', 'max', true);
 
           var result = MFat.optimize(150);
           var totalMin = _.reduce(result.collection, function(memo, val) { return memo + val.min; }, 0);

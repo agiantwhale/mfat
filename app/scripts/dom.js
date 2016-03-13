@@ -1,8 +1,7 @@
+/* global MFat, $, _, swal */
 'use strict';
 
 $(document).ready(function() {
-  var diningMenu = null;
-
   var $meal = $('#meal').selectize({
     highlight: false,
     openOnFocus: true
@@ -15,10 +14,12 @@ $(document).ready(function() {
     highlight: false,
     openOnFocus: true,
     onChange: function(value) {
-      if(value === 'calories')
+      if(value === 'calories') {
         $('#counterpart').html('portions');
-      if(value === 'portion')
+      }
+      if(value === 'portion') {
         $('#counterpart').html('calories');
+      }
     }
   });
   var $repeats = $('#repeats').selectize({
@@ -28,9 +29,11 @@ $(document).ready(function() {
 
   var portions = $('#portion').html();
   $('#portion').blur(function() {
-    if(portions!==$(this).html()){
-      portions = $(this).html().replace(/\D/g,'');
-      if(portions === '') portions = '0';
+    if(portions !== $(this).html()){
+      portions = $(this).html().replace(/\D/g, '');
+      if(portions === '') {
+        portions = '0';
+      }
       $(this).html(portions);
     }
   });
@@ -52,7 +55,7 @@ $(document).ready(function() {
     var location = $location[0].selectize.getValue();
     var response = $goal[0].selectize.getValue();
     var control = response === 'calories' ? 'portion' : 'calories';
-    var repeats = $repeats[0].selectize.getValue() == 'yes';
+    var repeats = $repeats[0].selectize.getValue() === 'yes';
 
     MFat.scrap(location).then(function(menu) {
       if(!_.isArray(menu[meal])) {
@@ -68,15 +71,15 @@ $(document).ready(function() {
       MFat.collection(menu[meal], control, response, repeats);
       var result = MFat.optimize(parseInt(portions));
 
-      var totalCalories = _.reduce(result.collection, function(memo, menu){ return memo + menu.calories;}, 0);
-      var totalPortions = _.reduce(result.collection, function(memo, menu){ return memo + menu.portion;}, 0);
+      var totalCalories = _.reduce(result.collection, function(memo, menuItem){ return memo + menuItem.calories; }, 0);
+      var totalPortions = _.reduce(result.collection, function(memo, menuItem){ return memo + menuItem.portion; }, 0);
 
       var html = '';
-      _.each(result.collection, function(menu) {
+      _.each(result.collection, function(menuItem) {
         html += '<tr>';
-        html += '<td>' + menu.name + '</td>';
-        html += '<td>' + menu.calories + '</td>';
-        html += '<td>' + menu.portion + '</td>';
+        html += '<td>' + menuItem.name + '</td>';
+        html += '<td>' + menuItem.calories + '</td>';
+        html += '<td>' + menuItem.portion + '</td>';
         html += '</tr>';
       });
 
