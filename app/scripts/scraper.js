@@ -17,7 +17,6 @@ this.MFat = (function(exports, $) {
             var menuitem = course.menuitem[k];
             try {
               var menuname = menuitem.name;
-              menuname = menuname.substring(0, menuname.length-1);
               var portion = parseInt(menuitem.itemsize.portion_size);
               var kcal = menuitem.itemsize.nutrition.kcal;
               kcal = parseInt(kcal.substring(0, kcal.length-4));
@@ -32,7 +31,6 @@ this.MFat = (function(exports, $) {
           var menuitem = course.menuitem;
           try {
             var menuname = menuitem.name;
-            menuname = menuname.substring(0, menuname.length-1);
             var portion = parseInt(menuitem.itemsize.portion_size);
             var kcal = menuitem.itemsize.nutrition.kcal;
             kcal = parseInt(kcal.substring(0, kcal.length-4));
