@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300|PT+Sans:400,400italic,700,700italic|PT+Sans+Narrow:400,700|Roboto+Mono:400,400italic,500,500italic,700,700italic,300italic,300,100italic,100);
+@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic|PT+Sans+Narrow:400,700|Roboto+Mono:100);
 
 $font-family-sans-serif: 'PT Sans', sans-serif;
 $font-family-monospace: 'Roboto Mono', ;
@@ -10,7 +10,7 @@ $link-color: darken(white, 20%);
 $icon-font-path: '../fonts/';
 
 $UM_MAIZE: #ffcb05;
-$UM_BLUE: #00274c;
+$UM_BLUE: #34495e;
 
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
@@ -85,14 +85,14 @@ body {
   }
 }
 
-#outline-box {
-  @include display(flex);
-  @include align-items(center);
+.sweet-alert {
+  p, button {
+    font-family: $font-family-sans-serif;
+  }
 
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+  button {
+     background-color: $UM_BLUE !important;
+  }
 }
 
 #info-outline {
@@ -100,72 +100,137 @@ body {
 }
 
 #heading {
+  margin-top: 40px;
+
   #logo {
     @extend .text-center;
 
-    img {
-      display: inline-block;
-      border-style: solid;
-      border-width: 0 1px 0 0;
-      border-color: white;
-      padding-right: 6px;
-    }
+    font-family: $font-family-monospace;
+    font-weight: 100;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    line-height: 100%;
+    font-size: 32px;
+    color: white;
+  }
 
-    span {
-      letter-spacing: -4px;
-      vertical-align: middle;
-      font-size: 64px;
-      color: white;
-    }
+  #subheading {
+    @extend .text-center;
+
+    font-style: italic;
   }
 }
 
 #content {
-  margin-top: 80px;
+  margin-top: 60px;
 
-  #question {
-    @extend .text-center;
-  }
+  #query {
+    #question {
+      @extend .text-center;
+    }
 
-  #response {
-    @extend .text-center;
+    #response {
+      @extend .text-center;
 
-    margin-top: 20px;
-    font-size: 32px;
+      margin-top: 20px;
+      font-size: 32px;
 
-    #portion {
-      color: darken($text-color, 10%);
-      border-color: darken($text-color, 10%);
-      border-width: 0 0 3px 0;
-      border-style: dotted;
+      #portion {
+        color: darken($text-color, 10%);
+        border-color: darken($text-color, 10%);
+        border-width: 0 0 3px 0;
+        border-style: dotted;
 
-      &:focus {
-        outline: none;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    #plan-btn {
+      @extend .center-block;
+      @include transition(all 0.25s ease-in-out);
+
+      font-size: 24px;
+      background-color: transparent;
+      border-color: white;
+      border-radius: 12px;
+      border-style: solid;
+      padding: 6px 9px 2px 6px;
+      margin-top: 20px;
+      color: white;
+
+      &:hover {
+
+        background-color: white;
+        color: $UM_BLUE;
+        text-decoration: none;
       }
     }
   }
 
-  #plan-btn {
+  #table {
     @extend .center-block;
-    @include transition(all 0.25s ease-in-out);
+    max-width: 480px;
 
-    font-size: 24px;
-    background-color: transparent;
-    border-color: white;
-    border-radius: 12px;
-    border-style: solid;
-    padding: 6px 9px 2px 6px;
-    margin-top: 20px;
-    color: white;
+    table {
+      @extend .table;
+      @extend .table-condensed;
 
-    &:hover {
+      td {
+        @extend .text-right;
 
-      background-color: white;
-      color: $UM_BLUE;
-      text-decoration: none;
+        border: none;
+
+        &:first-child {
+          @extend .text-left;
+        }
+
+      }
+
+      tbody tr td, tbody tr th {
+        border: none;
+      }
+
+      tbody tr:last-child {
+        border-style: solid;
+        border-width: 1px 0 0 0;
+        border-color: white;
+        font-weight: bold;
+      }
+
+      thead {
+        border-style: solid;
+        border-width: 0 0 1px 0;
+        border-color: white;
+
+        tr {
+           font-weight: bold;
+        }
+      }
+    }
+
+    #return-btn {
+      @extend .center-block;
+      @include transition(all 0.25s ease-in-out);
+
+      font-size: 24px;
+      background-color: transparent;
+      border-color: white;
+      border-radius: 12px;
+      border-style: solid;
+      padding: 6px 4px 0 5px;
+      margin-top: 20px;
+      color: white;
+
+      &:hover {
+
+        background-color: white;
+        color: $UM_BLUE;
+        text-decoration: none;
+      }
     }
   }
-
 }
 
 #footer {

@@ -12,6 +12,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.css" />
+    <link rel="stylesheet" href="/bower_components/sweetalert/dist/sweetalert.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -28,50 +29,69 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div id="outline-box">
     <div id="info-outline">
       <div id="heading">
         <h1 id="logo">
-          <img width="120" src="/images/BlockM.png" alt="University of Michigan">
-          <span>FAT</span>
+          &nbsp;&nbsp;&nbsp;UMich<br>
+          &nbsp;Calorie<br>
+          Optimize
         </h1>
+        <h5 id="subheading">defeating freshman 15... one calorie at a time.</h5>
       </div>
 
       <div id="content">
-        <h4 id="question">Where do you eat? What are your goals?</h4>
-        <p id="response">I eat
-          <select id="meal" name="">
-            <option value="BREAKFAST">breakfast</option>
-            <option value="LUNCH">lunch</option>
-            <option value="DINNER">dinner</option>
-          </select> at 
-          <select id="location" name="">
-            <option value="South Quad Dining Hall">South Quad</option>
-            <option value="North Quad Dining Hall">North Quad</option>
-            <option value="East Quad Dining Hall">East Quad</option>
-            <option value="Bursley Dining Hall">Bursley</option>
-            <option value="Markley Dining Hall">Markley</option>
-            <option value="Martha Cook Dining Hall">Martha Cook</option>
-            <option value="Mosher Jordan Dining Hall">Mojo</option>
-          </select> Dining Hall, and I want to maximize 
-          <select id="goal" name="">
-            <option value="portion">portions</option>
-            <option value="calories">calories</option>
-          </select> intake, while eating at most <span id="portion" contenteditable="true">300</span> <span id="counterpart">calories</span>. I also
-          <select id="repeats" name="">
-            <option value="no">don't want</option>
-            <option value="yes">want</option>
-          </select> repeated dishes.
-        </p>
-        <button id="plan-btn"><span class="glyphicon glyphicon-cutlery"></span></button>
+        <div id="query">
+          <h4 id="question">Where do you eat? What are your goals?</h4>
+          <p id="response">I eat
+            <select id="meal" name="">
+              <option value="BREAKFAST">breakfast</option>
+              <option value="LUNCH">lunch</option>
+              <option value="DINNER">dinner</option>
+            </select> at 
+            <select id="location" name="">
+              <option value="South Quad Dining Hall">South Quad</option>
+              <option value="North Quad Dining Hall">North Quad</option>
+              <option value="East Quad Dining Hall">East Quad</option>
+              <option value="Bursley Dining Hall">Bursley</option>
+              <option value="Markley Dining Hall">Markley</option>
+              <option value="Martha Cook Dining Hall">Martha Cook</option>
+              <option value="Mosher Jordan Dining Hall">Mojo</option>
+            </select> Dining Hall, and I want to maximize 
+            <select id="goal" name="">
+              <option value="portion">portions</option>
+              <option value="calories">calories</option>
+            </select> intake, while eating at most <span id="portion" contenteditable="true">300</span> <span id="counterpart">calories</span>. I also
+            <select id="repeats" name="">
+              <option value="no">don't want</option>
+              <option value="yes">want</option>
+            </select> repeated dishes.
+          </p>
+          <button id="plan-btn"><span class="glyphicon glyphicon-cutlery"></span></button>
+        </div>
+
+        <div id="table" class="hidden">
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <td>Food</td>
+                  <td>Calories (kcal)</td>
+                  <td>Portions</td>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+              </tbody>
+            </table>
+          </div>
+          <button id="return-btn"><span class="glyphicon glyphicon-repeat"></span></button>
+        </div>
       </div>
 
       <div id="footer">
         <h5>another fine weekend hack by <a href="https://jae.works/">jae</a><br>
             this site is not affiliated or endorsed by the university of michigan (dontsueme)<br>
-            have a cool project in mind? <a href="https://jae.works/#contacts">let's talk</a></h5>
+            have a cool project in mind? <a href="https://www.facebook.com/profile.php?id=hackerjae">let's grab coffee</a></h5>
       </div>
-    </div>
     </div>
 
 
@@ -94,6 +114,7 @@
     <script src="/bower_components/sifter/sifter.js"></script>
     <script src="/bower_components/microplugin/src/microplugin.js"></script>
     <script src="/bower_components/selectize/dist/js/selectize.js"></script>
+    <script src="/bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     

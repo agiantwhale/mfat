@@ -35,18 +35,70 @@ $(document).ready(function() {
     }
   });
 
+  $('#return-btn').click(function() {
+    $('#query').removeClass('hidden');
+    $('#table').addClass('hidden');
+  });
+
   $('#plan-btn').click(function() {
+    swal({
+      title: 'One second...',
+      text: 'Loading latest dining hall menu...',
+      type: 'info',
+      allowEscapeKey: false,
+      showConfirmButton: false
+    });
     var meal = $meal[0].selectize.getValue();
     var location = $location[0].selectize.getValue();
-    var control = $goal[0].selectize.getValue();
-    var response = control === 'calories' ? 'portion' : 'calories';
+    var response = $goal[0].selectize.getValue();
+    var control = response === 'calories' ? 'portion' : 'calories';
     var repeats = $repeats[0].selectize.getValue() == 'yes';
 
     MFat.scrap(location).then(function(menu) {
+      if(!_.isArray(menu[meal])) {
+        swal({
+          title: 'Oops..',
+          text: 'Seems like ' + location + ' isn\'t serving ' + meal.toLowerCase() + ' today!',
+          type: 'error',
+          confirmButtonText: 'Alright...'
+        });
+        return;
+      }
+
       MFat.collection(menu[meal], control, response, repeats);
       var result = MFat.optimize(parseInt(portions));
-      console.log(result);
+
+      var totalCalories = _.reduce(result.collection, function(memo, menu){ return memo + menu.calories;}, 0);
+      var totalPortions = _.reduce(result.collection, function(memo, menu){ return memo + menu.portion;}, 0);
+
+      var html = '';
+      _.each(result.collection, function(menu) {
+        html += '<tr>';
+        html += '<td>' + menu.name + '</td>';
+        html += '<td>' + menu.calories + '</td>';
+        html += '<td>' + menu.portion + '</td>';
+        html += '</tr>';
+      });
+
+      html += '<tr>';
+      html += '<td>Total</td>';
+      html += '<td>' + totalCalories + '</td>';
+      html += '<td>' + totalPortions + '</td>';
+      html += '</tr>';
+
+      $('#table-body').html(html);
+
+      $('#query').addClass('hidden');
+      $('#table').removeClass('hidden');
+
+      swal.close();
     }).fail(function() {
+      swal({
+        title: 'Oops..',
+        text: 'There was an error retrieving the latest menu information. Give Jae a message!',
+        type: 'error',
+        confirmButtonText: 'Alright...'
+      });
     });
   });
 });
