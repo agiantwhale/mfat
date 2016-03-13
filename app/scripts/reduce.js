@@ -12,7 +12,7 @@
 //              "collection": array,  // array of selected objects
 //              "target": integer     // total optimized numeric value
 //            }
-var MFat = (function(exports) {
+this.MFat = (function(exports) {
   // Recursive implementation
   // Will kill your callstack
   var collection = [];
@@ -96,4 +96,4 @@ var MFat = (function(exports) {
   };
 
   return exports;
-}(MFat || {}));
+}(this.MFat || {}));
