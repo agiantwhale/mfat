@@ -29,11 +29,11 @@ var MFat = (function(exports) {
   };
   var hasher = function(a, b) {
     if(a < 0) return -1;
-    b = reduceCounts(a, b);
     return a >= b ? a * a + a + b : a + b * b;
   };
   var reduce = function(target, counts) {
-    if(counts == 0 || target < 0) {
+    var reducedCounts = reduceCounts(target, counts);
+    if(reducedCounts == 0 || target < 0) {
       memoize[hasher(target, counts)] = {
         collection: [],
         accumulator: 0
@@ -41,21 +41,22 @@ var MFat = (function(exports) {
       return true;
     }
 
-    if(!_.isUndefined(memoize[hasher(target, counts)])) {
+    if(!_.isUndefined(memoize[hasher(target, reducedCounts)])) {
+      memoize[hasher(target, counts)] = memoize[hasher(target, reducedCounts)];
       return true;
     }
 
-    var prevResult = memoize[hasher(target, counts-1)];
+    var prevResult = memoize[hasher(target, reducedCounts-1)];
     if(_.isUndefined(prevResult)) {
-      store.push([target, counts-1]);
+      store.push([target, reducedCounts-1]);
       return false;
     }
 
-    var lastElement = collection[counts-1];
+    var lastElement = collection[reducedCounts-1];
     var currResult = memoize[hasher(target - lastElement[control],
-                                     counts)];
+                                    reducedCounts)];
     if(_.isUndefined(currResult)) {
-      store.push([target - lastElement[control], counts]);
+      store.push([target - lastElement[control], reducedCounts]);
       return false;
     }
 
