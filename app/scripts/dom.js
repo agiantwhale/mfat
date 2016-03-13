@@ -6,6 +6,7 @@ $(document).ready(function() {
     highlight: false,
     openOnFocus: true
   });
+  $meal[0].selectize.setValue('LUNCH');
   var $location = $('#location').selectize({
     highlight: false,
     openOnFocus: true
