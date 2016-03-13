@@ -81,6 +81,7 @@ this.MFat = (function(exports, $) {
       },
       error: function(data) {
         // handle error here.
+        deferred.reject();
       }
     });
 
