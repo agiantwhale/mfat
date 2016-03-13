@@ -5,5 +5,7 @@
     "underscore",
     "chai"
   ],
-  "loadEagerly": []
+  "loadEagerly": [
+    "bower_components/selectize/dist/js/selectize.js"
+  ]
 }

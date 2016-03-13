@@ -11,6 +11,7 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/selectize/dist/css/selectize.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -26,44 +27,48 @@
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">mfat</h3>
+
+    <div id="outline-box">
+    <div id="info-outline">
+      <div id="heading">
+        <h1 id="logo">
+          <img width="120" src="/images/BlockM.png" alt="University of Michigan">
+          <span>FAT</span>
+        </h1>
       </div>
 
-      <div class="jumbotron">
-        <h1>'Allo, 'Allo!</h1>
-        <p class="lead">Always a pleasure scaffolding your apps.</p>
-        <p><a class="btn btn-lg btn-success" href="#">Splendid!</a></p>
+      <div id="content">
+        <h4 id="question">Where do you eat? What are your goals?</h4>
+        <p id="response">I eat
+          <select id="meal" name="">
+            <option value="breakfast">breakfast</option>
+            <option value="lunch">lunch</option>
+            <option value="dinner">dinner</option>
+          </select> at 
+          <select id="location" name="">
+            <option value="squad">South Quad</option>
+            <option value="nquad">North Quad</option>
+            <option value="bursley">Bursley</option>
+            <option value="mojo">Mojo</option>
+            <option value="markley">Markley</option>
+          </select> Dining Hall, and I want to 
+          <select id="goal" name="">
+            <option value="min">minimize</option>
+            <option value="max">maximize</option>
+          </select> calorie intake, while taking less than 1504 portions.
+        </p>
+        <button id="plan-btn"><span class="glyphicon glyphicon-cutlery"></span></button>
       </div>
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <h4>HTML5 Boilerplate</h4>
-          <p>HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.</p>
-          
-          <h4>Sass</h4>
-          <p>Sass is the most mature, stable, and powerful professional grade CSS extension language in the world.</p>
-          
-          <h4>Bootstrap</h4>
-          <p>Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.</p>
-          <h4>Modernizr</h4>
-          <p>Modernizr is an open-source JavaScript library that helps you build the next generation of HTML5 and CSS3-powered websites.</p>
-          
-        </div>
-      </div>
-
-      <div class="footer">
-        <p>♥ from the Yeoman team</p>
+      <div id="footer">
+        <h5>another fine weekend hack by jae <br>
+            this site is not affiliated or endorsed by the university of michigan (dontsueme) <br>
+            have a cool project in mind? let's talk</h5>
       </div>
     </div>
-    
+    </div>
+
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -77,6 +82,12 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/URIjs/src/URI.js"></script>
+    <script src="/bower_components/jsonproxy/jsonp.js"></script>
+    <script src="/bower_components/underscore/underscore.js"></script>
+    <script src="/bower_components/sifter/sifter.js"></script>
+    <script src="/bower_components/microplugin/src/microplugin.js"></script>
+    <script src="/bower_components/selectize/dist/js/selectize.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     
@@ -96,7 +107,9 @@
     <!-- endbuild -->
     
     <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>
+    <script src="scripts/dom.js"></script>
+    <script src="scripts/reduce.js"></script>
+    <script src="scripts/scraper.js"></script>
     <!-- endbuild -->
   </body>
 </html>
