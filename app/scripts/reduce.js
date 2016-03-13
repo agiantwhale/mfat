@@ -15,6 +15,7 @@
 this.MFat = (function(exports, _) {
   // Recursive implementation
   // Will kill your callstack
+  var allowRepeats = false;
   var collection = [];
   var control = '';
   var response = '';
@@ -24,7 +25,8 @@ this.MFat = (function(exports, _) {
     var sortObject = {};
     sortObject[control] = target;
     var minCounts = _.sortedIndex(collection, sortObject, control);
-    if(collection[minCounts][control] == target) minCounts++;
+    if(minCounts < collection.length &&
+       collection[minCounts][control] == target) minCounts++;
     return Math.min(minCounts, counts);
   };
   var hasher = function(a, b) {
@@ -33,7 +35,7 @@ this.MFat = (function(exports, _) {
   };
   var reduce = function(target, counts) {
     var reducedCounts = reduceCounts(target, counts);
-    if(reducedCounts == 0 || target < 0) {
+    if(reducedCounts <= 0 || target < 0) {
       memoize[hasher(target, counts)] = {
         collection: [],
         accumulator: 0
@@ -54,9 +56,10 @@ this.MFat = (function(exports, _) {
 
     var lastElement = collection[reducedCounts-1];
     var currResult = memoize[hasher(target - lastElement[control],
-                                    reducedCounts)];
+                                    allowRepeats ? reducedCounts : reducedCounts-1)];
     if(_.isUndefined(currResult)) {
-      store.push([target - lastElement[control], reducedCounts]);
+      store.push([target - lastElement[control],
+                  allowRepeats ? reducedCounts : reducedCounts-1]);
       return false;
     }
 
