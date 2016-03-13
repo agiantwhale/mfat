@@ -13,6 +13,16 @@ $(document).ready(function() {
   });
   var $goal = $('#goal').selectize({
     highlight: false,
+    openOnFocus: true,
+    onChange: function(value) {
+      if(value === 'calories')
+        $('#counterpart').html('portions');
+      if(value === 'portion')
+        $('#counterpart').html('calories');
+    }
+  });
+  var $repeats = $('#repeats').selectize({
+    highlight: false,
     openOnFocus: true
   });
 
@@ -28,12 +38,15 @@ $(document).ready(function() {
   $('#plan-btn').click(function() {
     var meal = $meal[0].selectize.getValue();
     var location = $location[0].selectize.getValue();
-    var goal = $goal[0].selectize.getValue();
+    var control = $goal[0].selectize.getValue();
+    var response = control === 'calories' ? 'portion' : 'calories';
+    var repeats = $repeats[0].selectize.getValue() == 'yes';
 
     MFat.scrap(location).then(function(menu) {
-      MFat.collection(menu[meal], 'portion', 'calories')
+      MFat.collection(menu[meal], control, response, repeats);
       var result = MFat.optimize(parseInt(portions));
       console.log(result);
+    }).fail(function() {
     });
   });
 });

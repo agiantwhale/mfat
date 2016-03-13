@@ -90,11 +90,12 @@ this.MFat = (function(exports, _) {
 
     return memoize[hasher(target, counts)];
   };
-  exports.collection = function(co, ctrl, resp) {
+  exports.collection = function(co, ctrl, resp, repe) {
     memoize = {};
     store = [];
     control = ctrl;
     response = resp;
+    allowRepeats = repe;
     collection = _.sortBy(co, control);
   };
 

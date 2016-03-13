@@ -53,11 +53,15 @@
             <option value="Markley Dining Hall">Markley</option>
             <option value="Martha Cook Dining Hall">Martha Cook</option>
             <option value="Mosher Jordan Dining Hall">Mojo</option>
-          </select> Dining Hall, and I want to 
+          </select> Dining Hall, and I want to maximize 
           <select id="goal" name="">
-            <option value="min">minimize</option>
-            <option value="max">maximize</option>
-          </select> calorie intake, while taking less than <span id="portion" contenteditable="true">300</span> portions.
+            <option value="portion">portions</option>
+            <option value="calories">calories</option>
+          </select> intake, while eating at most <span id="portion" contenteditable="true">300</span> <span id="counterpart">calories</span>. I also
+          <select id="repeats" name="">
+            <option value="no">don't want</option>
+            <option value="yes">want</option>
+          </select> repeated dishes.
         </p>
         <button id="plan-btn"><span class="glyphicon glyphicon-cutlery"></span></button>
       </div>
