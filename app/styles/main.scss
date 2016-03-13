@@ -78,6 +78,7 @@ body {
   color: white;
 
   .active {
+    @include transition(all 0.25s ease-in-out);
     background-color: darken($text-color, 10%);
     color: lighten($UM_BLUE, 10%);
   }
@@ -130,6 +131,17 @@ body {
 
     margin-top: 20px;
     font-size: 32px;
+
+    #portion {
+      color: darken($text-color, 10%);
+      border-color: darken($text-color, 10%);
+      border-width: 0 0 3px 0;
+      border-style: dotted;
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
 
   #plan-btn {
