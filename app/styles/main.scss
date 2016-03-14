@@ -95,6 +95,10 @@ body {
   }
 }
 
+.table-responsive {
+  border: none !important;
+}
+
 #info-outline {
   @extend .container;
 }
