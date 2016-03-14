@@ -16,10 +16,10 @@ $(document).ready(function() {
     openOnFocus: true,
     onChange: function(value) {
       if(value === 'calories') {
-        $('#counterpart').html('portions');
+        $('#counterpart').html('(g) servings');
       }
       if(value === 'portion') {
-        $('#counterpart').html('calories');
+        $('#counterpart').html('(kcal) calories');
       }
     }
   });
