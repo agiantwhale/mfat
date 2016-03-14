@@ -2,6 +2,24 @@
 'use strict';
 
 this.MFat = (function(exports, $) {
+  var extractItem = function(menuitem) {
+    try {
+      var menuname = menuitem.name;
+      var portion = parseInt(menuitem.itemsize.portion_size);
+      var serving = menuitem.itemsize.serving_size;
+      var kcal = menuitem.itemsize.nutrition.kcal;
+      kcal = parseInt(kcal.substring(0, kcal.length - 4));
+      return {
+        name: menuname,
+        portion: portion,
+        serving: serving,
+        calories: kcal
+      };
+    } catch(e) {console.log(e); }
+
+    return null;
+  };
+
   // Don't try to understand...
   var sanitize = function(data) {
     var menus = {};
@@ -13,38 +31,22 @@ this.MFat = (function(exports, $) {
 
       for(var j in meal.course) {
         var course = meal.course[j];
+        var menuitem = null;
+        var extracted = null;
         if($.isArray(course.menuitem)) {
-          var menuitem = null;
-          var menuname = null;
-          var portion = null;
-          var kcal = null;
           for(var k in course.menuitem) {
             menuitem = course.menuitem[k];
-            try {
-              menuname = menuitem.name;
-              portion = parseInt(menuitem.itemsize.portion_size);
-              kcal = menuitem.itemsize.nutrition.kcal;
-              kcal = parseInt(kcal.substring(0, kcal.length - 4));
-              items.push({
-                name: menuname,
-                portion: portion,
-                calories: kcal
-              });
-            } catch(e) {console.log(e); }
+            extracted = extractItem(menuitem);
+            if(extracted) {
+              items.push(extracted);
+            }
           }
         } else if($.isPlainObject(course.menuitem)){
           menuitem = course.menuitem;
-          try {
-            menuname = menuitem.name;
-            portion = parseInt(menuitem.itemsize.portion_size);
-            kcal = menuitem.itemsize.nutrition.kcal;
-            kcal = parseInt(kcal.substring(0, kcal.length - 4));
-            items.push({
-              name: menuname,
-              portion: portion,
-              calories: kcal
-            });
-          } catch(e) {console.log(e); }
+          extracted = extractItem(menuitem);
+          if(extracted) {
+            items.push(extracted);
+          }
         }
       }
 

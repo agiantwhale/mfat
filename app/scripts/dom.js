@@ -79,15 +79,15 @@ $(document).ready(function() {
       _.each(result.collection, function(menuItem) {
         html += '<tr>';
         html += '<td>' + menuItem.name + '</td>';
-        html += '<td>' + menuItem.calories + '</td>';
-        html += '<td>' + menuItem.portion + '</td>';
+        html += '<td>' + menuItem.calories + ' kcal</td>';
+        html += '<td>' + menuItem.serving + ' (' + menuItem.portion + ' g)</td>';
         html += '</tr>';
       });
 
       html += '<tr>';
       html += '<td>Total</td>';
-      html += '<td>' + totalCalories + '</td>';
-      html += '<td>' + totalPortions + '</td>';
+      html += '<td>' + totalCalories + ' kcal</td>';
+      html += '<td>' + totalPortions + ' g</td>';
       html += '</tr>';
 
       $('#table-body').html(html);

@@ -1,6 +1,6 @@
-/* global MFat, chai */
+/* global MFat, chai, _ */
 
-(function () {
+(function (_) {
   'use strict';
 
   describe('Load menu info from server', function () {
@@ -15,6 +15,12 @@
            for(var i in menus) {
              var meals = menus[i];
              chai.assert.isAbove(meals.length, 0);
+
+             _.each(meals, function(meal) {
+               chai.expect(meal).to.include.keys('portion');
+               chai.expect(meal).to.include.keys('serving');
+               chai.expect(meal).to.include.keys('calories');
+             });
            }
 
            done();
@@ -22,4 +28,4 @@
        }
     );
   });
-})();
+})(_);
