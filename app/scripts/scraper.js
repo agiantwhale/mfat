@@ -1,20 +1,125 @@
-/* global jQuery */
+/* global jQuery, _ */
 'use strict';
 
-this.MFat = (function(exports, $) {
+this.MFat = (function(exports, $, _) {
+  var shortCodes = {
+    'b1': {
+      name: 'vitamin B1',
+      unit: 'mg'
+    },
+    'b12': {
+      name: 'vitamin B12',
+      unit: 'mcg'
+    },
+    'b2': {
+      name: 'vitamin B2',
+      unit: 'mg'
+    },
+    'b6': {
+      name: 'vitamin B6',
+      unit: 'mg'
+    },
+    'ca': {
+      name: 'calcium',
+      unit: 'mg'
+    },
+    'cho': {
+      name: 'carbohydrate',
+      unit: 'gm'
+    },
+    'chol': {
+      name: 'cholesterol',
+      unit: 'mg'
+    },
+    'fat': {
+      name: 'fat',
+      unit: 'gm'
+    },
+    'fatrn': {
+      name: 'trans fat',
+      unit: 'gm'
+    },
+    'fe': {
+      name: 'iron',
+      unit: 'gm'
+    },
+    // 'fol': {
+    //   name: 'unknown',
+    //   unit: 'mcg'
+    // },
+    'kcal': {
+      name: 'calories',
+      unit: 'kcal'
+    },
+    'mg': {
+      name: 'magnesium',
+      unit: 'mg'
+    },
+    'na': {
+      name: 'sodium',
+      unit: 'mg'
+    },
+    // 'nia': {
+    //   name: 'unknown',
+    //   unit: 'mg'
+    // },
+    'pro': {
+      name: 'protein',
+      unit: 'gm'
+    },
+    'sfa': {
+      name: 'saturated fat',
+      unit: 'gm'
+    },
+    'sugar': {
+      name: 'sugar',
+      unit: 'gm'
+    },
+    'tdfb': {
+      name: 'dietary fiber',
+      unit: 'gm'
+    },
+    'vitc': {
+      name: 'vitamin C',
+      unit: 'mg'
+    },
+    'vite': {
+      name: 'vitamin E',
+      unit: 'mg'
+    },
+    'vtaiu': {
+      name: 'vitamin A',
+      unit: 'iu'
+    },
+    'zn': {
+      name: 'zinc',
+      unit: 'mg'
+    }
+  };
+  var shortCodeKeys = _.map(shortCodes, function(obj, key) {return key; });
+  exports.shortCodes = shortCodes;
+
   var extractItem = function(menuitem) {
     try {
       var menuname = menuitem.name;
       var portion = parseInt(menuitem.itemsize.portion_size);
       var serving = menuitem.itemsize.serving_size;
-      var kcal = menuitem.itemsize.nutrition.kcal;
-      kcal = parseInt(kcal.substring(0, kcal.length - 4));
-      return {
+      var extracted = {
         name: menuname,
         portion: portion,
-        serving: serving,
-        calories: kcal
+        serving: serving
       };
+
+      for(var i in shortCodeKeys) {
+        var key = shortCodeKeys[i];
+        var val = parseInt(menuitem.itemsize.nutrition[key]);
+        if(!_.isNumber(val) || _.isNaN(val)) {
+          return null;
+        }
+        extracted[key] = parseInt(menuitem.itemsize.nutrition[key]);
+      }
+
+      return extracted;
     } catch(e) {console.log(e); }
 
     return null;
@@ -94,4 +199,4 @@ this.MFat = (function(exports, $) {
   };
 
   return exports;
-}(this.MFat || {}, jQuery));
+}(this.MFat || {}, jQuery, _));

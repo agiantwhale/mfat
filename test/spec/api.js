@@ -12,16 +12,18 @@
 
          request.done(function(menus) {
            chai.assert(menus.length !== 0);
-           for(var i in menus) {
-             var meals = menus[i];
-             chai.assert.isAbove(meals.length, 0);
-
+           _.each(menus, function(meals) {
              _.each(meals, function(meal) {
+               chai.expect(meal).to.include.keys('name');
                chai.expect(meal).to.include.keys('portion');
                chai.expect(meal).to.include.keys('serving');
-               chai.expect(meal).to.include.keys('calories');
+               _.each(MFat.shortCodes, function(obj, key) {
+                 chai.expect(meal).to.include.keys(key);
+                 chai.assert.isNumber(meal[key]);
+                 chai.assert(!_.isNaN(meal[key]));
+               });
              });
-           }
+           });
 
            done();
          });
