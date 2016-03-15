@@ -43,10 +43,10 @@ this.MFat = (function(exports, $, _) {
       name: 'iron',
       unit: 'gm'
     },
-    // 'fol': {
-    //   name: 'unknown',
-    //   unit: 'mcg'
-    // },
+    'fol': {
+      name: 'vitamin B9',
+      unit: 'mcg'
+    },
     'kcal': {
       name: 'calories',
       unit: 'kcal'
@@ -59,10 +59,10 @@ this.MFat = (function(exports, $, _) {
       name: 'sodium',
       unit: 'mg'
     },
-    // 'nia': {
-    //   name: 'unknown',
-    //   unit: 'mg'
-    // },
+    'nia': {
+      name: 'vitamin B3',
+      unit: 'mg'
+    },
     'pro': {
       name: 'protein',
       unit: 'gm'
