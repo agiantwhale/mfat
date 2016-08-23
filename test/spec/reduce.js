@@ -1,9 +1,9 @@
-/* global MFat, chai, _ */
+/* global TheResolver, chai, _ */
 
 (function () {
     'use strict';
 
-    describe('Find the most optimal values to eat.', function () {
+    describe('DPResolver', function () {
         it('return the correct number', function () {
           var menu = [
             {min: 5, max: 1},
@@ -13,24 +13,24 @@
             {min: 200, max: 50}
           ];
 
-          MFat.collection(menu, 'min', 'max', true);
+          const TheResolver = new DPResolver('min', 'max');
 
-          var result = MFat.optimize(150);
+          var result = TheResolver.optimize(menu, 150);
           var totalMin = _.reduce(result.collection, function(memo, val) { return memo + val.min; }, 0);
           chai.assert.isTrue(totalMin <= 150);
           chai.assert.equal(result.accumulator, 33);
 
-          result = MFat.optimize(160);
+          result = TheResolver.optimize(menu, 160);
           totalMin = _.reduce(result.collection, function(memo, val) { return memo + val.min; }, 0);
           chai.assert.isTrue(totalMin <= 160);
           chai.assert.equal(result.accumulator, 36);
 
-          result = MFat.optimize(170);
+          result = TheResolver.optimize(menu, 170);
           totalMin = _.reduce(result.collection, function(memo, val) { return memo + val.min; }, 0);
           chai.assert.isTrue(totalMin <= 170);
           chai.assert.equal(result.accumulator, 38);
 
-          result = MFat.optimize(200);
+          result = TheResolver.optimize(menu, 200);
           totalMin = _.reduce(result.collection, function(memo, val) { return memo + val.min; }, 0);
           chai.assert.isTrue(totalMin <= 200);
           chai.assert.equal(result.accumulator, 50);

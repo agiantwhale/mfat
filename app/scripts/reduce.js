@@ -1,19 +1,59 @@
 /* global _ */
 'use strict';
 
-// REQUIRES:  collection must be sorted list of objects with
-//            members control and response
-//            options: {
-//              "control": string,    // parameter to min (eg: calories)
-//              "response": string,   // parameter to max (eg: portion)
-//              "target": integer     // numeric value to optimize "control"
-//            }
-// EFFECTS:   returns the following object
-//            {
-//              "collection": array,  // array of selected objects
-//              "target": integer     // total optimized numeric value
-//            }
-this.MFat = (function(exports, _) {
+class DPResolver {
+  constructor(reduceControl, reduceTarget, allowRepeats,
+              findIndex = _.sortedIndex, // Feel free to implement binary search
+              sortBy = _.sortBy
+              ) {
+    this.control = reduceControl;
+    this.response = reduceTarget;
+    this.allowRepeats = allowRepeats;
+    this.findIndex = findIndex;
+    this.sortBy = sortBy;
+  }
+
+  optimize(collection, target, memoize = true) {
+    this.sortedCollection = this.sortBy(collection, this.control);
+
+    let result = this._reduceRecursively(this.sortedCollection, target);
+    return result.collection;
+  }
+
+  _buildResult(collection) {
+    return {
+      collection,
+      accumulator: collection.reduce((p, c) => p + c, 0)
+    };
+  }
+
+  _reduceRecursively(sortedCollection, target) {
+    let collection = sortedCollection.filter(
+      (a) => a[this.control] <= target
+    );
+
+    if(collection.length == 0) return this._buildResult(collection);
+
+    let clonedCollection = collection.slice();
+    let lastElement = clonedCollection.pop();
+
+    let prevResult = this._reduceRecursively(clonedCollection, target);
+
+    if(!this.allowRepeats) collection.pop();
+
+    let currResult =  this._reduceRecursively(collection, target - lastElement[this.control]);
+    currResult.collection.push(lastElement);
+    currResult.accumulator += lastElement[this.response];
+
+    if(currResult.accumulator > prevResult.accumulator) return currResult;
+    else return prevResult;
+  };
+
+  _reduceLinearly(sortedCollection, target, memoization) {
+  };
+}
+
+this.TheResolver = (function(exports, _) {
   // Recursive implementation
   // Will kill your callstack
   var allowRepeats = false;
@@ -106,4 +146,4 @@ this.MFat = (function(exports, _) {
   };
 
   return exports;
-}(this.MFat || {}, _)); // Relies on underscore
+}(this.TheResolver || {}, _)); // Relies on underscore
