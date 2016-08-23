@@ -27,29 +27,72 @@ class DPResolver {
     };
   }
 
-  _reduceRecursively(sortedCollection, target) {
-    let collection = sortedCollection.filter(
-      (a) => a[this.control] <= target
-    );
+  _cloneResult(result) {
+    return {
+      collection: result.collection.slice(),
+      accumulator: result.accumulator
+    };
+  }
 
-    if(collection.length == 0) return this._buildResult(collection);
+  _appendElement(result, element) {
+    let result = this._cloneResult(result);
+    result.collection.push(element);
+    result.accumulator += element[this.response];
+    return result;
+  }
 
-    let clonedCollection = collection.slice();
-    let lastElement = clonedCollection.pop();
+  _cutOffIndex(target, maxIndex = this.sortedCollection.length-1) {
+    const sortObject = {};
+    sortObject[this.control] = target;
 
-    let prevResult = this._reduceRecursively(clonedCollection, target);
+    let cutOffIndex = this.findBy(this.sortedCollection, sortObject, control);
 
-    if(!this.allowRepeats) collection.pop();
+    if(cutOffIndex < collection.length &&
+       this.collection[cutOffIndex][this.control] === target) cutOffIndex++;
 
-    let currResult =  this._reduceRecursively(collection, target - lastElement[this.control]);
-    currResult.collection.push(lastElement);
-    currResult.accumulator += lastElement[this.response];
+    return Math.min(cutOffIndex, maxIndex);
+  };
+
+  _reduceRecursively(target, maxIndex = this.sortedCollection.length) {
+    const cutOffIndex = this._cutOffIndex(target, maxIndex);
+
+    if(cutOffIndex === 0) return this._buildResult(collection);
+
+    let prevResult = this._reduceRecursively(target, cutOffIndex-1);
+    let currResult =  this._reduceRecursively(target - collection[cutOffIndex][this.control],
+                                              this.allowRepeats ? cutOffIndex : cutOffIndex-1);
+    currResult.collection.push(collection[cutOffIndex]);
+    currResult.accumulator += collection[cutOffIndex][this.response];
 
     if(currResult.accumulator > prevResult.accumulator) return currResult;
     else return prevResult;
   };
 
-  _reduceLinearly(sortedCollection, target, memoization) {
+  _reduceIteratively(target, maxIndex, memoize) {
+    const cutOffIndex = this._cutOffIndex(target, maxIndex);
+
+    if(cutOffIndex <= 0 || target < 0)
+      return memoize.update(a, b, this._buildResult(collection));
+
+    if(!memoize.exists(target, cutOffIndex-1))
+      return memoize.queue(target, cutOffIndex-1);
+    let prevResult = memoize.retrieve(target, cutOffIndex-1);
+
+    var lastElement = collection[cutOffIndex-1];
+    let currentTarget = target-lastElement[this.control],
+        currentIndex = this.allowRepeats ? cutOffIndex : cutOffIndex-1;
+    if(!memoize.exists(currentTarget, currentIndex))
+      return memoize.queue(currentTarget, currentIndex);
+    let currResult = this._cloneResult(
+      memoize.retrieve(currentTarget,
+                       currentIndex)
+    );
+    this._appendElement(currResult, lastElement);
+
+    let finalResult =
+      currResult.accumulator > prevResult.accumulator ? currResult : prevResult;
+
+    return memoize.update(target, cutOffIndex, finalResult);
   };
 }
 
